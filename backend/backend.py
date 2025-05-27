@@ -1,7 +1,11 @@
 # back end para o chat bot
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+<<<<<<< HEAD
 import requests  
+=======
+import requests 
+>>>>>>> 644adaaf75baf3217999a642f0a892650d402911
 
 app = Flask(__name__)
 CORS(app, resources={
