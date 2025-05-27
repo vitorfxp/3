@@ -4,10 +4,7 @@ import requests
 
 app = Flask(__name__)
 CORS(app)  
-<<<<<<< HEAD
-=======
 
->>>>>>> 644adaaf75baf3217999a642f0a892650d402911
 
 @app.route('/chat', methods=['POST', 'OPTIONS'])
 def chat():
