@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const userInput = document.getElementById('user-input');
     const sendButton = document.getElementById('send-button');
 
-    // Função para adicionar mensagem ao chat
+    
     function addMessage(sender, message) {
         const messageElement = document.createElement('div');
         messageElement.classList.add('message', sender);
@@ -12,12 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    // Enviar mensagem para a API Flask
+   
 async function sendMessage() {
     const userInput = document.getElementById('user-input').value;
     const chatBox = document.getElementById('chat-messages');
     
-    // Adiciona mensagem do usuário
+    
     chatBox.innerHTML += `<div class="user-message">${userInput}</div>`;
     
     try {
@@ -29,10 +29,10 @@ async function sendMessage() {
 
         const data = await response.json();
         
-        // Adiciona resposta do bot (AGORA FUNCIONANDO)
+        
         chatBox.innerHTML += `<div class="bot-message">${data.response}</div>`;
         
-        // Limpa input e rola para a última mensagem
+        
         document.getElementById('user-input').value = '';
         chatBox.scrollTop = chatBox.scrollHeight;
         
@@ -41,7 +41,7 @@ async function sendMessage() {
     }
 }
 
-    // Event listeners
+  
     sendButton.addEventListener('click', sendMessage);
     userInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') sendMessage();

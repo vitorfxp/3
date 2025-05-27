@@ -1,9 +1,9 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import requests  # Adicionei esta linha crucial
+import requests  
 
 app = Flask(__name__)
-CORS(app)  # Habilita CORS
+CORS(app)  
 
 # Rota principal integrada com Ollama
 @app.route('/chat', methods=['POST', 'OPTIONS'])
@@ -47,3 +47,5 @@ def chat():
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
+
+    

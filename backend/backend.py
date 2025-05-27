@@ -1,14 +1,15 @@
+# back end para o chat bot
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import requests  # Substitui o httpx (usado no FastAPI)
+import requests  
 
 app = Flask(__name__)
 CORS(app, resources={
     r"/chat": {"origins": "*"},
     r"/api/chat": {"origins": "*"}
-})  # Habilita CORS para todas as rotas
+})  
 
-# Rota principal do chat (simples)
+
 @app.route('/chat', methods=['POST', 'OPTIONS'])
 def chat():
     if request.method == 'OPTIONS':
@@ -23,7 +24,7 @@ def chat():
         return jsonify({"status": "ok"}), 200
     
     try:
-        # Verifica se o conteúdo é JSON
+       
         if not request.is_json:
             return jsonify({"error": "Content-Type deve ser application/json"}), 400
             
@@ -33,7 +34,7 @@ def chat():
         if not user_message:
             return jsonify({"error": "Campo 'message' é obrigatório"}), 400
 
-        # Restante do código da Ollama...
+        
         
     except Exception as e:
         return jsonify({"error": str(e)}), 400
