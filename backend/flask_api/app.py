@@ -5,7 +5,6 @@ import requests
 app = Flask(__name__)
 CORS(app)  
 
-
 @app.route('/chat', methods=['POST', 'OPTIONS'])
 def chat():
     if request.method == 'OPTIONS':
@@ -45,7 +44,9 @@ def chat():
             "status": "error"
         }), 500
 
-if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+import os
 
+if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 5000))  # Usa a porta do Render ou 5000 localmente
+    app.run(host="0.0.0.0", port=port, debug=True)
     
