@@ -4,9 +4,8 @@ import requests
 import os
 
 app = Flask(__name__)
-CORS(app)  # Habilita CORS para todas as rotas
+CORS(app)  
 
-# Rota raiz obrigatória para health checks
 @app.route('/')
 def home():
     return jsonify({"status": "online", "service": "chat-backend"})
@@ -46,6 +45,14 @@ def chat():
             "error": f"Erro no servidor: {str(e)}",
             "status": "error"
         }), 500
+
+
+@app.errorhandler(405)
+def method_not_allowed(e):
+    return jsonify({
+        "error": "Method not allowed",
+        "allowed_methods": ["GET", "HEAD"]
+    }), 405
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 10000))  # Usa a porta do Render ou 10000
