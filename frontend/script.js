@@ -70,5 +70,3 @@ async function sendMessage(userMessage) {
     }
 }
 
-// Uso:
-sendMessage("calls, cruise or woof?");
