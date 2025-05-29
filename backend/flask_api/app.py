@@ -1,26 +1,32 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import requests  
+import requests
+import os
 
 app = Flask(__name__)
-CORS(app)  
+CORS(app)  # Habilita CORS para todas as rotas
 
+# Rota raiz obrigatória para health checks
+@app.route('/')
+def home():
+    return jsonify({"status": "online", "service": "chat-backend"})
+
+# Rota do chatbot
 @app.route('/chat', methods=['POST', 'OPTIONS'])
 def chat():
     if request.method == 'OPTIONS':
+        # Resposta pré-flight para CORS
         return jsonify({"status": "ok"}), 200
     
     try:
-        # 1. Recebe a mensagem do frontend
         data = request.get_json()
-        user_message = data.get("message", "")
+        user_message = data.get("message", "").strip()
         
         if not user_message:
             return jsonify({"error": "Mensagem vazia"}), 400
 
-        # 2. Envia para a Ollama
         ollama_response = requests.post(
-            "http://localhost:11434/api/chat",
+            "http://localhost:11434/api/chat",  # Ou sua URL remota da Ollama
             json={
                 "model": "llama3",
                 "messages": [{"role": "user", "content": user_message}],
@@ -29,24 +35,18 @@ def chat():
             timeout=30
         )
         
-        # 3. Processa a resposta
         response_data = ollama_response.json()
-        bot_response = response_data.get("message", {}).get("content", "Sem resposta")
-        
         return jsonify({
-            "response": bot_response,
+            "response": response_data.get("message", {}).get("content", "Sem resposta"),
             "status": "success"
         })
 
-    except requests.exceptions.RequestException as e:
+    except Exception as e:
         return jsonify({
-            "error": f"Falha na conexão com Ollama: {str(e)}",
+            "error": f"Erro no servidor: {str(e)}",
             "status": "error"
         }), 500
 
-import os
-
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))  # Usa a porta do Render ou 5000 localmente
-    app.run(host="0.0.0.0", port=port, debug=True)
-    
+    port = int(os.environ.get("PORT", 10000))  # Usa a porta do Render ou 10000
+    app.run(host="0.0.0.0", port=port, debug=False)
