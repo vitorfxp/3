@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const userInput = document.getElementById('user-input');
     const sendButton = document.getElementById('send-button');
 
-    
     function addMessage(sender, message) {
         const messageElement = document.createElement('div');
         messageElement.classList.add('message', sender);
@@ -12,61 +11,36 @@ document.addEventListener('DOMContentLoaded', () => {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-   
-async function sendMessage() {
-    const userInput = document.getElementById('user-input').value;
-    const chatBox = document.getElementById('chat-messages');
-    
-    
-    chatBox.innerHTML += `<div class="user-message">${userInput}</div>`;
-    
-    try {
-        const response = await fetch('https://three-1-8a6g.onrender.com', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: userInput })
-        });
+    async function sendMessage() {
+        const message = userInput.value.trim();
+        if (!message) return; // Não envia mensagens vazias
 
-        const data = await response.json();
-        
-        
-        chatBox.innerHTML += `<div class="bot-message">${data.response}</div>`;
-        
-        
-        document.getElementById('user-input').value = '';
-        chatBox.scrollTop = chatBox.scrollHeight;
-        
-    } catch (error) {
-        chatBox.innerHTML += `<div class="error-message">Erro: ${error.message}</div>`;
+        addMessage('user-message', message);
+        userInput.value = ''; // Limpa o input
+
+        try {
+            const response = await fetch('https://three-1-8a6g.onrender.com/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: message })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || "Erro no back-end");
+            }
+
+            const data = await response.json();
+            addMessage('bot-message', data.response);
+
+        } catch (error) {
+            addMessage('error-message', `Erro: ${error.message}`);
+        }
     }
-}
 
-  
     sendButton.addEventListener('click', sendMessage);
     userInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') sendMessage();
     });
 });
-
-document.getElementById('user-input').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        sendMessage();
-    }
-});
-
-const API_URL = "https://three-1-8a6g.onrender.com/chat"; 
-
-async function sendMessage(userMessage) {
-    try {
-        const response = await fetch(API_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message: userMessage }),
-        });
-        const data = await response.json();
-        console.log("Resposta do bot:", data.response);
-    } catch (error) {
-        console.error("Erro:", error);
-    }
-}
 
