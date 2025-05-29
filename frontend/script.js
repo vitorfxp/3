@@ -53,3 +53,22 @@ document.getElementById('user-input').addEventListener('keypress', function(e) {
         sendMessage();
     }
 });
+
+const API_URL = "https://three-1-8a6g.onrender.com/chat"; 
+
+async function sendMessage(userMessage) {
+    try {
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: userMessage }),
+        });
+        const data = await response.json();
+        console.log("Resposta do bot:", data.response);
+    } catch (error) {
+        console.error("Erro:", error);
+    }
+}
+
+// Uso:
+sendMessage("calls, cruise or woof?");
