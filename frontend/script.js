@@ -21,7 +21,7 @@ async function sendMessage() {
     chatBox.innerHTML += `<div class="user-message">${userInput}</div>`;
     
     try {
-        const response = await fetch('http://localhost:5000/chat', {
+        const response = await fetch('https://three-1-8a6g.onrender.com', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ message: userInput })
