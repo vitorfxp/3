@@ -6,16 +6,16 @@ import logging
 
 app = Flask(__name__)
 
-# Configuração CORS para Render (liberando métodos e headers necessários)
+# Configuração CORS para Render
 CORS(app, resources={
     r"/*": {
-        "origins": "*",  # Em produção, substitua pelo seu domínio front-end
-        "methods": ["GET", "POST", "OPTIONS", "PUT", "DELETE"],
-        "allow_headers": ["Content-Type", "Authorization", "X-Requested-With"]
+        "origins": "*",
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization"]
     }
 })
 
-# Configuração de logs (útil para debug no Render)
+# Configuração de logs
 logging.basicConfig(level=logging.INFO)
 app.logger.info("Servidor iniciado")
 
@@ -24,36 +24,39 @@ def home():
     return jsonify({
         "status": "online",
         "service": "chat-backend (Render)",
-        "endpoint": "/chat (POST)",
-        "docs": "Envie POST com { 'message': 'texto' } para /chat"
+        "endpoint": "/chat (POST)"
     })
 
 @app.route('/chat', methods=['POST', 'OPTIONS'])
 def chat():
     if request.method == 'OPTIONS':
         return jsonify({"status": "ok"}), 200
-    
+
+    # --- LOGS PARA DEBUG DO PAYLOAD ---
+    app.logger.info(f"\n[HEADERS]: {request.headers}\n[DATA RAW]: {request.data}\n[CONTENT-TYPE]: {request.content_type}")
+
     try:
         # Aceita JSON ou FormData
         if request.content_type == 'application/json':
             data = request.get_json()
+            app.logger.info(f"[JSON RECEBIDO]: {data}")  # Log do JSON parseado
         else:
             data = request.form.to_dict()
+            app.logger.info(f"[FORM DATA RECEBIDO]: {data}")  # Log de formulário
 
+        # Validação do campo 'message'
         user_message = data.get("message", "").strip()
-        
         if not user_message:
+            app.logger.error("[ERRO]: Campo 'message' vazio ou ausente")
             return jsonify({
                 "error": "Campo 'message' é obrigatório",
                 "status": "error"
             }), 400
 
-        # URL do Ollama (substitua pela sua se necessário)
+        # --- CHAMADA PARA O OLLAMA ---
         OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434/api/chat")
-        
-        app.logger.info(f"Processando mensagem: {user_message[:50]}...")
-        
-        # Chamada para o Ollama com timeout ajustado para cloud
+        app.logger.info(f"[OLLAMA REQUEST]: Enviando mensagem: '{user_message[:50]}...'")
+
         ollama_response = requests.post(
             OLLAMA_URL,
             json={
@@ -61,32 +64,32 @@ def chat():
                 "messages": [{"role": "user", "content": user_message}],
                 "stream": False
             },
-            timeout=45  # Timeout aumentado para ambientes cloud
+            timeout=45
         )
-        
-        ollama_response.raise_for_status()  # Lança erro para respostas 4XX/5XX
-        
+        ollama_response.raise_for_status()
+
         response_data = ollama_response.json()
+        app.logger.info(f"[OLLAMA RESPONSE]: Resposta recebida: {response_data.get('message', {}).get('content', '')[:100]}...")
+
         return jsonify({
             "response": response_data.get("message", {}).get("content", "Sem resposta"),
             "status": "success"
         })
 
     except requests.exceptions.RequestException as e:
-        app.logger.error(f"Erro no Ollama: {str(e)}")
+        app.logger.error(f"[ERRO OLLAMA]: {str(e)}")
         return jsonify({
             "error": f"Erro ao acessar o serviço de chat: {str(e)}",
             "status": "error"
         }), 502 if isinstance(e, (requests.Timeout, requests.ConnectionError)) else 500
-        
+
     except Exception as e:
-        app.logger.error(f"Erro interno: {str(e)}", exc_info=True)
+        app.logger.error(f"[ERRO INTERNO]: {str(e)}", exc_info=True)
         return jsonify({
             "error": "Erro interno no servidor",
             "status": "error"
         }), 500
 
-# Configuração do servidor para o Render
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port, debug=False)
