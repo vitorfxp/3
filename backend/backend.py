@@ -1,15 +1,13 @@
 # back end para o chat bot
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-<<<<<<< HEAD
-import requests  
-=======
-import requests 
->>>>>>> 644adaaf75baf3217999a642f0a892650d402911
+
+from flask_cors import CORS
+
 
 app = Flask(__name__)
 CORS(app, resources={
-    r"/chat": {"origins": "*"},
+    r"/chat": {"origins": "https://chatbo22321342145.netlify.app/"},
     r"/api/chat": {"origins": "*"}
 })  
 
