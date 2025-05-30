@@ -13,10 +13,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function sendMessage() {
         const message = userInput.value.trim();
-        if (!message) return; // Não envia mensagens vazias
+        if (!message) return;
 
         addMessage('user-message', message);
-        userInput.value = ''; // Limpa o input
+        userInput.value = '';
+
+        // Mostra o indicador de digitação (adicionado)
+        document.getElementById('typing-indicator').style.display = 'flex';
 
         try {
             const response = await fetch('https://three-1-8a6g.onrender.com/chat', {
@@ -31,9 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const data = await response.json();
+            // Esconde o indicador (adicionado)
+            document.getElementById('typing-indicator').style.display = 'none';
             addMessage('bot-message', data.response);
 
         } catch (error) {
+            document.getElementById('typing-indicator').style.display = 'none';
             addMessage('error-message', `Erro: ${error.message}`);
         }
     }
@@ -43,4 +49,3 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Enter') sendMessage();
     });
 });
-
