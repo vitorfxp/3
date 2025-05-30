@@ -30,6 +30,59 @@ body {
     overflow-y: auto;
 }
 
+.message {
+    margin: 10px 0;
+    padding: 10px 15px;
+    border-radius: 18px;
+    max-width: 70%;
+    word-wrap: break-word;
+}
+
+.user-message {
+    background: #0078d7;
+    color: white;
+    margin-left: auto;
+    border-bottom-right-radius: 5px;
+}
+
+.bot-message {
+    background: #f1f1f1;
+    margin-right: auto;
+    border-bottom-left-radius: 5px;
+}
+
+.typing-indicator {
+    display: none;
+    background: #f1f1f1;
+    padding: 10px 15px;
+    border-radius: 18px;
+    margin: 5px 0;
+    width: fit-content;
+}
+
+.typing-indicator span {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #666;
+    border-radius: 50%;
+    margin: 0 2px;
+    animation: bounce 1.5s infinite ease-in-out;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-5px); }
+}
+
 .chat-input {
     display: flex;
     padding: 10px;
@@ -55,60 +108,4 @@ body {
 
 #send-button:hover {
     background: #005bb5;
-}
-
-.user-message {
-    background: #0078d7;
-    color: white;
-    padding: 10px 15px;
-    border-radius: 18px 18px 0 18px;
-    margin: 5px 0 5px auto;
-    max-width: 70%;
-    word-wrap: break-word;
-}
-
-.bot-message {
-    background: #f1f1f1;
-    padding: 10px 15px;
-    border-radius: 18px 18px 18px 0;
-    margin: 5px auto 5px 0;
-    max-width: 70%;
-    word-wrap: break-word;
-}
-
-.error-message {
-    color: red;
-    font-style: italic;
-}
-
-/* Indicador de digitação (adicionado) */
-.typing-indicator {
-    background: #f1f1f1;
-    padding: 10px 15px;
-    border-radius: 18px 18px 18px 0; /* Igual ao .bot-message */
-    margin: 5px auto 5px 0; /* Alinhado à esquerda */
-    width: fit-content;
-}
-
-.typing-indicator span {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    background: #666;
-    border-radius: 50%;
-    margin: 0 2px;
-    animation: bounce 1.5s infinite ease-in-out;
-}
-
-.typing-indicator span:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.typing-indicator span:nth-child(3) {
-    animation-delay: 0.4s;
-}
-
-@keyframes bounce {
-    0%, 60%, 100% { transform: translateY(0); }
-    30% { transform: translateY(-5px); }
 }
