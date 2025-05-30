@@ -83,12 +83,11 @@ body {
 
 /* Indicador de digitação (adicionado) */
 .typing-indicator {
-    display: none;
     background: #f1f1f1;
-    padding: 10px;
-    border-radius: 15px;
+    padding: 10px 15px;
+    border-radius: 18px 18px 18px 0; /* Igual ao .bot-message */
+    margin: 5px auto 5px 0; /* Alinhado à esquerda */
     width: fit-content;
-    margin: 5px;
 }
 
 .typing-indicator span {
