@@ -20,7 +20,7 @@ logging.basicConfig(level=logging.INFO)
 app.logger.info("Servidor iniciado")
 
 # Configuração do Gemini (use variável de ambiente GEMINI_API_KEY no Render)
-genai.configure(api_key=os.environ.get("AIzaSyDkCmpPVbuCOK20nJ_e46fnqJt1XIN3KAs"))
+genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
 model = genai.GenerativeModel('gemini-1.5-flash')
 
 @app.route('/')

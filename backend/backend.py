@@ -1,12 +1,12 @@
-# back end para o chat bot
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import requests
+import google.generativeai as genai
 import os
+import logging
 
 app = Flask(__name__)
 
-# CORS configurado para o front-end no Netlify
+# Configuração CORS para o front-end no Netlify
 CORS(app, resources={
     r"/chat": {
         "origins": "https://chatbo22321342145.netlify.app",
@@ -15,39 +15,60 @@ CORS(app, resources={
     }
 })
 
+# Configuração de logs
+logging.basicConfig(level=logging.INFO)
+app.logger.info("Servidor iniciado")
+
+# Configuração do Gemini (use variável de ambiente GEMINI_API_KEY)
+genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
+model = genai.GenerativeModel('gemini-1.5-flash')
+
 @app.route('/chat', methods=['POST', 'OPTIONS'])
 def chat():
     if request.method == 'OPTIONS':
         return jsonify({"status": "ok"}), 200
     
     try:
+        # Validação do conteúdo
         if not request.is_json:
+            app.logger.error("Content-Type não é JSON")
             return jsonify({"error": "Content-Type deve ser application/json"}), 400
             
         data = request.get_json()
         user_message = data.get("message")
         
         if not user_message:
+            app.logger.error("Campo 'message' ausente")
             return jsonify({"error": "Campo 'message' é obrigatório"}), 400
 
-        # Integração com Ollama (substitua pela sua lógica)
-        ollama_response = requests.post(
-            "http://localhost:11434/api/chat",
-            json={
-                "model": "llama3",
-                "messages": [{"role": "user", "content": user_message}],
-                "stream": False
-            },
-            timeout=30
+        # Log da mensagem recebida
+        app.logger.info(f"Mensagem recebida: {user_message[:100]}...")
+
+        # Chamada para o Gemini
+        response = model.generate_content(
+            user_message,
+            generation_config={
+                "max_output_tokens": 2048,  # Controla o tamanho da resposta
+                "temperature": 0.7         # Criatividade (0-1)
+            }
         )
-        ollama_response.raise_for_status()
         
-        return jsonify(ollama_response.json())
+        app.logger.info(f"Resposta gerada: {response.text[:100]}...")
         
-    except requests.exceptions.RequestException as e:
-        return jsonify({"error": f"Erro no Ollama: {str(e)}"}), 502
+        return jsonify({
+            "message": {
+                "role": "assistant",
+                "content": response.text
+            },
+            "status": "success"
+        })
+        
     except Exception as e:
-        return jsonify({"error": f"Erro interno: {str(e)}"}), 500
+        app.logger.error(f"Erro: {str(e)}")
+        return jsonify({
+            "error": f"Erro no servidor: {str(e)}",
+            "status": "error"
+        }), 500
 
 if __name__ == '__main__':
     app.run(port=int(os.environ.get("PORT", 5000)), debug=False)
