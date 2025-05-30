@@ -11,39 +11,40 @@ document.addEventListener('DOMContentLoaded', () => {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    async function sendMessage() {
-        const message = userInput.value.trim();
-        if (!message) return;
+  async function sendMessage() {
+    const message = userInput.value.trim();
+    if (!message) return;
 
-        addMessage('user-message', message);
-        userInput.value = '';
+    addMessage('user-message', message);
+    userInput.value = '';
 
-        // Mostra o indicador de digitação (adicionado)
-        document.getElementById('typing-indicator').style.display = 'flex';
+    // Cria o indicador de digitação dinamicamente (no final das mensagens)
+    const typingIndicator = document.createElement('div');
+    typingIndicator.id = 'typing-indicator';
+    typingIndicator.className = 'typing-indicator';
+    typingIndicator.innerHTML = '<span></span><span></span><span></span>';
+    chatMessages.appendChild(typingIndicator);
+    chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll para o indicador
 
-        try {
-            const response = await fetch('https://three-1-8a6g.onrender.com/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: message })
-            });
+    try {
+        const response = await fetch('https://three-1-8a6g.onrender.com/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: message })
+        });
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || "Erro no back-end");
-            }
+        if (!response.ok) throw new Error("Erro no back-end");
 
-            const data = await response.json();
-            // Esconde o indicador (adicionado)
-            document.getElementById('typing-indicator').style.display = 'none';
-            addMessage('bot-message', data.response);
+        const data = await response.json();
+        // Remove o indicador antes de adicionar a resposta
+        chatMessages.removeChild(typingIndicator);
+        addMessage('bot-message', data.response);
 
-        } catch (error) {
-            document.getElementById('typing-indicator').style.display = 'none';
-            addMessage('error-message', `Erro: ${error.message}`);
-        }
+    } catch (error) {
+        chatMessages.removeChild(typingIndicator);
+        addMessage('error-message', `Erro: ${error.message}`);
     }
-
+}
     sendButton.addEventListener('click', sendMessage);
     userInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') sendMessage();
