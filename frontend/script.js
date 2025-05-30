@@ -32,6 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const messageElement = document.createElement('div');
         messageElement.classList.add('message', sender);
         messageElement.textContent = message;
+        const formattedMessage = message.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        messageElement.innerHTML = formattedMessage;
         chatMessages.appendChild(messageElement);
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
