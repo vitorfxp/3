@@ -27,23 +27,26 @@ document.addEventListener('DOMContentLoaded', () => {
     chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll para o indicador
 
     try {
-        const response = await fetch('https://three-1-8a6g.onrender.com/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: message })
-        });
+    const response = await fetch('https://three-1-8a6g.onrender.com/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: message })
+    });
 
-        if (!response.ok) throw new Error("Erro no back-end");
+    if (!response.ok) throw new Error("Erro no back-end");
 
-        const data = await response.json();
-        // Remove o indicador antes de adicionar a resposta
-        chatMessages.removeChild(typingIndicator);
-        addMessage('bot-message', data.response);
+    const data = await response.json();
+    
+    // Remove o indicador ANTES de adicionar a resposta
+    const typingElement = document.getElementById('typing-indicator');
+    if (typingElement) typingElement.remove(); // Garante a remoção
+    
+    addMessage('bot-message', data.response);
 
-    } catch (error) {
-        chatMessages.removeChild(typingIndicator);
-        addMessage('error-message', `Erro: ${error.message}`);
-    }
+} catch (error) {
+    const typingElement = document.getElementById('typing-indicator');
+    if (typingElement) typingElement.remove(); // Remove mesmo em caso de erro
+    addMessage('error-message', `Erro: ${error.message}`);
 }
     sendButton.addEventListener('click', sendMessage);
     userInput.addEventListener('keypress', (e) => {
