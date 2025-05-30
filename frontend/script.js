@@ -11,15 +11,20 @@ document.addEventListener('DOMContentLoaded', () => {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    function showTypingIndicator() {
-        const typingIndicator = document.createElement('div');
-        typingIndicator.id = 'typing-indicator';
-        typingIndicator.className = 'typing-indicator';
-        typingIndicator.innerHTML = '<span></span><span></span><span></span>';
-        chatMessages.appendChild(typingIndicator);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-        return typingIndicator;
+function showTypingIndicator() {
+    const typingIndicator = document.createElement('div');
+    typingIndicator.className = 'typing-indicator';
+    
+    // Cria os 3 spans da animação
+    for (let i = 0; i < 3; i++) {
+        const span = document.createElement('span');
+        typingIndicator.appendChild(span);
     }
+    
+    chatMessages.appendChild(typingIndicator);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    return typingIndicator;
+}
 
     function hideTypingIndicator(typingIndicator) {
         if (typingIndicator && typingIndicator.parentNode) {
