@@ -3,23 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Chat Dragom</title>
+  <title>Chat Dragão</title>
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
   <!-- Título sempre visível -->
   <header class="header">
-    <h1 class="titulo">Chat Dragon</h1>
+    <h1 class="titulo">Chat Dragão</h1>
   </header>
 
   <!-- Tela de introdução (permanece visível) -->
   <div id="intro">
-    <h2 class="intro-text">Bem-vindo ao Chat Dragon</h2>
+    <h2 class="intro-text">Bem-vindo ao Chat Dragão</h2>
     <p class="intro-subtitle">Como posso te ajudar hoje?</p>
   </div>
 
   <!-- Área principal do chat -->
   <div id="chat-container" class="hidden">
+    <!-- Seção de configuração do avatar -->
+    <div class="avatar-setup" id="avatar-setup">
+      <div class="avatar-config">
+        <h3>Escolha seu avatar</h3>
+        <div class="avatar-options">
+          <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
+          <div class="current-avatar" id="current-avatar">
+            <div class="avatar-placeholder">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="#666">
+                <path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="avatar-buttons">
+            <button type="button" id="upload-btn" class="avatar-btn">Escolher Foto</button>
+            <button type="button" id="start-chat-btn" class="avatar-btn primary">Começar Chat</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
     <div class="chat-box" id="chat-box"></div>
     <form id="chat-form">
       <input type="text" id="user-input" placeholder="Digite sua mensagem..." autocomplete="off" required />
