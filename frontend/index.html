@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chat Dragão</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-    <div class="particles" id="particles"></div>
+  <!-- Título sempre visível -->
+  <header class="header">
+    <h1 class="titulo">Chat Dragão</h1>
+  </header>
 
-        </div>
-        <div class="chat-container">
-            <div class="chat-header">
-                <h1>Chat BOT</h1>
-            </div>
-            <div class="chat-messages" id="chat-messages"></div>
-            <div class="chat-input">
-                <input type="text" id="user-input" placeholder="Digite sua mensagem...">
-                <button id="send-button">Enviar</button>
-            </div>
-        </div>
-    </div>
-    <script src="script.js"></script>
+  <!-- Tela de introdução (desaparece) -->
+  <div id="intro" class="fade-in">
+    <h2 class="intro-text">Bem-vindo ao Chat Dragão</h2>
+    <p id="typing-effect"></p>
+  </div>
+
+  <!-- Área principal do chat -->
+  <div id="chat-container" class="hidden">
+    <div class="chat-box" id="chat-box"></div>
+    <form id="chat-form">
+      <input type="text" id="user-input" placeholder="Digite sua mensagem..." autocomplete="off" required />
+      <button type="submit">Enviar</button>
+    </form>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
