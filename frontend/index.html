@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Chat Dragão</title>
+  <title>Chat Dragom</title>
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
   <!-- Título sempre visível -->
   <header class="header">
-    <h1 class="titulo">Chat Dragão</h1>
+    <h1 class="titulo">Chat Dragon</h1>
   </header>
 
-  <!-- Tela de introdução (desaparece) -->
-  <div id="intro" class="fade-in">
-    <h2 class="intro-text">Bem-vindo ao Chat Dragão</h2>
-    <p id="typing-effect"></p>
+  <!-- Tela de introdução (permanece visível) -->
+  <div id="intro">
+    <h2 class="intro-text">Bem-vindo ao Chat Dragon</h2>
+    <p class="intro-subtitle">Como posso te ajudar hoje?</p>
   </div>
 
   <!-- Área principal do chat -->
@@ -23,7 +23,11 @@
     <div class="chat-box" id="chat-box"></div>
     <form id="chat-form">
       <input type="text" id="user-input" placeholder="Digite sua mensagem..." autocomplete="off" required />
-      <button type="submit">Enviar</button>
+      <button type="submit" class="send-button">
+        <svg class="send-icon" viewBox="0 0 24 24">
+          <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z"/>
+        </svg>
+      </button>
     </form>
   </div>
 

@@ -1,28 +1,31 @@
-window.addEventListener("DOMContentLoaded", () => {
-  const intro = document.getElementById("intro");
-  const chatContainer = document.getElementById("chat-container");
-
-  setTimeout(() => {
-    intro.style.display = "none";
-    chatContainer.classList.remove("hidden");
-    document.body.style.background = "#fff";
-  }, 3000);
-});
+// Mostra o chat após a animação de intro
+setTimeout(() => {
+  document.getElementById("chat-container").classList.remove("hidden");
+}, 4500);
 
 const form = document.getElementById("chat-form");
 const chatBox = document.getElementById("chat-box");
+const userInput = document.getElementById("user-input");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
-  const input = document.getElementById("user-input");
-  const userMessage = input.value.trim();
+  const userMessage = userInput.value.trim();
   if (!userMessage) return;
 
   addMessage(userMessage, "user");
-  input.value = "";
+  userInput.value = "";
 
-  const botReply = await sendMessageToAPI(userMessage);
-  addMessage(botReply, "bot");
+  // Mostra indicador de digitação
+  const typingIndicator = addTypingIndicator();
+  
+  try {
+    const botReply = await sendMessageToAPI(userMessage);
+    chatBox.removeChild(typingIndicator);
+    addMessage(botReply, "bot");
+  } catch (error) {
+    chatBox.removeChild(typingIndicator);
+    addMessage("Desculpe, ocorreu um erro. Tente novamente.", "bot");
+  }
 });
 
 function addMessage(text, sender) {
@@ -30,6 +33,20 @@ function addMessage(text, sender) {
   message.classList.add("message", sender);
   message.textContent = text;
   chatBox.appendChild(message);
+  scrollToBottom();
+}
+
+function addTypingIndicator() {
+  const indicator = document.createElement("div");
+  indicator.classList.add("message", "bot");
+  indicator.innerHTML = "Digitando...";
+  indicator.style.opacity = "0.7";
+  chatBox.appendChild(indicator);
+  scrollToBottom();
+  return indicator;
+}
+
+function scrollToBottom() {
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
@@ -43,32 +60,19 @@ async function sendMessageToAPI(message) {
     const data = await response.json();
     return data.response || "Erro na resposta.";
   } catch (err) {
-    return "Erro ao conectar com o servidor.";
+    throw new Error("Erro ao conectar com o servidor.");
   }
 }
-function typeText(text, elementId, speed = 50, callback) {
-  let i = 0;
-  const target = document.getElementById(elementId);
-  function typing() {
-    if (i < text.length) {
-      target.innerHTML += text.charAt(i);
-      i++;
-      setTimeout(typing, speed);
-    } else if (callback) {
-      callback();
-    }
+
+// Foco automático no input quando o chat aparecer
+setTimeout(() => {
+  userInput.focus();
+}, 5000);
+
+// Enter para enviar, Shift+Enter para nova linha
+userInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    form.dispatchEvent(new Event("submit"));
   }
-  typing();
-}
-
-window.onload = () => {
-  setTimeout(() => {
-    typeText("Como posso ajudar você hoje?", "typing-effect", 50, () => {
-      setTimeout(() => {
-        document.getElementById("intro").style.display = "none";
-        document.getElementById("chat-container").classList.remove("hidden");
-      }, 1000);
-    });
-  }, 2000); // tempo de exibição inicial do "Bem-vindo"
-};
-
+});
