@@ -64,7 +64,81 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
-// Função para adicionar mensagem com avatar
+// Função para processar e formatar texto com tópicos
+function formatBotMessage(text) {
+  // Divide o texto em linhas para processamento
+  const lines = text.split('\n');
+  let formattedContent = '';
+  let inTopic = false;
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    
+    if (!line) {
+      if (inTopic) {
+        formattedContent += '<div class="topic-content"><br></div>';
+      } else {
+        formattedContent += '<br>';
+      }
+      continue;
+    }
+    
+    // Verifica se é um tópico/título
+    let isTopicTitle = false;
+    let cleanTitle = line;
+    
+    // Verifica padrões de títulos
+    if (line.match(/\*\*(.*?)\*\*/)) {
+      isTopicTitle = true;
+      cleanTitle = line.replace(/\*\*(.*?)\*\*/g, '$1');
+    } else if (line.match(/^\d+\.\s*[^:]*:?/)) {
+      isTopicTitle = true;
+      cleanTitle = line.replace(/^(\d+\.\s*)/, '').replace(/:$/, '');
+    } else if (line.match(/^[A-Za-z]\.\s*[^:]*:?/)) {
+      isTopicTitle = true;
+      cleanTitle = line.replace(/^([A-Za-z]\.\s*)/, '').replace(/:$/, '');
+    } else if (line.match(/^[A-ZÀ-Ÿ][a-zà-ÿ\s]+:\s*$/)) {
+      isTopicTitle = true;
+      cleanTitle = line.replace(/:$/, '');
+    } else if (line.match(/^\*\s*[A-ZÀ-Ÿ]/)) {
+      isTopicTitle = true;
+      cleanTitle = line.replace(/^\*\s*/, '');
+    }
+    
+    if (isTopicTitle) {
+      // Fecha tópico anterior se existir
+      if (inTopic) {
+        formattedContent += '</div>';
+      }
+      
+      // Adiciona novo tópico com bolinha
+      formattedContent += `
+        <div class="topic-item">
+          <div class="topic-header">
+            <span class="topic-bullet">•</span>
+            <span class="topic-title">${cleanTitle}</span>
+          </div>
+      `;
+      inTopic = true;
+    } else {
+      // Conteúdo do tópico ou texto normal
+      if (inTopic) {
+        formattedContent += `<div class="topic-content">${line}</div>`;
+      } else {
+        formattedContent += `<div class="regular-text">${line}</div>`;
+      }
+    }
+  }
+  
+  // Fecha último tópico se ainda estiver aberto
+  if (inTopic) {
+    formattedContent += '</div>';
+  }
+  
+  return formattedContent || `<div class="regular-text">${text}</div>`;
+}
+
+// Função para adicionar mensagem com avatar e formatação de tópicos
 function addMessage(text, sender) {
   const messageContainer = document.createElement("div");
   messageContainer.classList.add("message-container", sender);
@@ -90,7 +164,13 @@ function addMessage(text, sender) {
   // Criar mensagem
   const message = document.createElement("div");
   message.classList.add("message");
-  message.textContent = text;
+  
+  // Se for mensagem do bot, aplica formatação de tópicos
+  if (sender === "bot") {
+    message.innerHTML = formatBotMessage(text);
+  } else {
+    message.textContent = text;
+  }
 
   // Montar container
   messageContainer.appendChild(avatar);
