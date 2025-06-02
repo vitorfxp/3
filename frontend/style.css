@@ -80,15 +80,15 @@ body {
 /* Versão DESKTOP (maior e mais suave) */
 @media (min-width: 769px) {
   #qrcode-container {
-    width: 530px;
-    height: 530px;
+    width: 590px;
+    height: 590px;
     padding: 20px;
     transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1); /* Animação premium */
   }
 
   #qrcode-container img {
-    max-width: 520px;
-    max-height: 520px;
+    max-width: 580px;
+    max-height: 580px;
   }
 }
 
