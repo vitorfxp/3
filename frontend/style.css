@@ -48,7 +48,7 @@ body {
   transform: translateY(-50%);
   z-index: 1000;
   opacity: 0;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgb(255, 255, 255);
   backdrop-filter: blur(10px);
   padding: 15px;
   border-radius: 12px;
@@ -80,15 +80,15 @@ body {
 /* Versão DESKTOP (maior e mais suave) */
 @media (min-width: 769px) {
   #qrcode-container {
-    width: 460px;
-    height: 460px;
+    width: 530px;
+    height: 530px;
     padding: 20px;
     transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1); /* Animação premium */
   }
 
   #qrcode-container img {
-    max-width: 450px;
-    max-height: 450px;
+    max-width: 520px;
+    max-height: 520px;
   }
 }
 
@@ -437,4 +437,11 @@ body {
     width: 140px;
     height: 140px;
   }
+}
+#qrcode-container {
+  background: transparent; /* Remove o fundo branco */
+  backdrop-filter: none; /* Remove o blur */
+  border: none; /* Remove a borda */
+  box-shadow: none; /* Remove a sombra */
+  padding: 0;
 }
