@@ -177,7 +177,7 @@ body {
   animation: fadeInStay 1s ease-in-out 4s forwards;
 }
 
-/* Configuração de Avatar */
+/* ✨ CONFIGURAÇÃO DE AVATAR COM ANIMAÇÃO SUAVE DA DIREITA */
 .avatar-setup {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
@@ -197,6 +197,50 @@ body {
 .current-avatar {
   display: inline-block;
   margin-bottom: 20px;
+  position: relative;
+}
+
+/* ✨ ANIMAÇÃO SUAVE DE FADE-IN DA DIREITA PARA O DRAGÃO */
+.current-avatar img {
+  width: 500px !important;
+  height: auto !important;
+  max-width: 90vw;
+  object-fit: contain; /* Mantém proporções sem esticar */
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  
+  /* Estado inicial - invisível e deslocado para direita */
+  opacity: 0;
+  transform: translateX(80px) scale(0.9);
+  
+  /* Animação suave */
+  animation: dragonFadeInFromRight 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s forwards;
+}
+
+/* Keyframe para animação do dragão */
+@keyframes dragonFadeInFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(80px) scale(0.9);
+    filter: blur(3px);
+  }
+  60% {
+    opacity: 0.8;
+    transform: translateX(-10px) scale(1.02);
+    filter: blur(1px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Efeito hover suave no dragão */
+.current-avatar img:hover {
+  transform: scale(1.05) translateY(-5px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .avatar-placeholder, .user-avatar, .bot-avatar {
@@ -213,6 +257,21 @@ body {
 .avatar-placeholder {
   background: rgba(102, 126, 234, 0.1);
   border: 2px dashed #667eea;
+  width: 500px !important;
+  height: 300px !important;
+  border-radius: 20px;
+  
+  /* Animação de placeholder também */
+  opacity: 0;
+  transform: translateX(60px);
+  animation: placeholderFadeIn 1.5s ease-out 0.3s forwards;
+}
+
+@keyframes placeholderFadeIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .user-avatar {
@@ -227,6 +286,16 @@ body {
   display: flex;
   gap: 12px;
   justify-content: center;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: buttonsSlideUp 1s ease-out 1.5s forwards;
+}
+
+@keyframes buttonsSlideUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .avatar-btn {
@@ -425,9 +494,20 @@ body {
     flex-direction: column;
   }
 
-  .user-avatar, .bot-avatar, .avatar-placeholder {
+  .user-avatar, .bot-avatar {
     width: 40px;
     height: 40px;
+  }
+
+  /* Dragão responsivo */
+  .current-avatar img {
+    width: 400px !important;
+    max-width: 85vw;
+  }
+
+  .avatar-placeholder {
+    width: 400px !important;
+    height: 250px !important;
   }
   
   /* QR Code responsivo melhorado */
@@ -446,6 +526,16 @@ body {
 }
 
 @media (max-width: 480px) {
+  .current-avatar img {
+    width: 350px !important;
+    max-width: 90vw;
+  }
+
+  .avatar-placeholder {
+    width: 350px !important;
+    height: 220px !important;
+  }
+
   #qrcode-container {
     right: -180px;
     padding: 15px;
