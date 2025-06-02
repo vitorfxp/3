@@ -169,3 +169,25 @@ sendButton.addEventListener("click", () => {
     verificarPalavraChave(userInput); // <- chama aqui!
   }
 });
+const showDragonAlert = () => {
+  const alertBox = document.getElementById("dragon-alert");
+  alertBox.classList.remove("hidden");
+};
+
+const observeInput = () => {
+  const observer = new MutationObserver(() => {
+    const chatTexts = document.querySelectorAll(".message");
+    chatTexts.forEach((msg) => {
+      if (msg.textContent.toLowerCase().includes("computandose")) {
+        showDragonAlert();
+      }
+    });
+  });
+
+  const chatContainer = document.querySelector("#chat-container"); // use o ID correto do seu chat
+  if (chatContainer) {
+    observer.observe(chatContainer, { childList: true, subtree: true });
+  }
+};
+
+observeInput();

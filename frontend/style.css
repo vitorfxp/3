@@ -366,3 +366,37 @@ body {
 #qrcode-container.visible {
   opacity: 1;
 }
+#dragon-alert {
+  position: absolute;
+  bottom: 120px;
+  left: 20px;
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 15px;
+  border-radius: 15px;
+  backdrop-filter: blur(5px);
+  animation: fadeIn 1s ease forwards;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#dragon-alert img {
+  width: 100px;
+  height: auto;
+  border-radius: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
