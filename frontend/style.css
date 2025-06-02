@@ -16,7 +16,7 @@ body {
   position: relative;
 }
 
-/* Cabeçalho fixo */
+/* Cabeçalho */
 .header {
   width: 100%;
   text-align: center;
@@ -39,87 +39,65 @@ body {
   letter-spacing: -0.5px;
 }
 
-/* ✨ QR CODE COM ANIMAÇÃO MELHORADA - LADO DIREITO */
+/* QR Code (NOVO ESTILO) */
+/* ===== QR CODE ATUALIZADO (MAIOR E MAIS SUAVE) ===== */
 #qrcode-container {
   position: fixed;
   top: 50%;
-  right: -250px; /* Começa fora da tela à direita */
+  right: 30px;
   transform: translateY(-50%);
-  z-index: 100; /* Z-index menor para não ficar na frente */
+  z-index: 1000;
   opacity: 0;
-  
-  /* Transição suave e elegante */
-  transition: all 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  
-  /* Container mais elegante */
-  background: rgba(255, 255, 255, 0.98);
-  backdrop-filter: blur(20px);
-  padding: 25px;
-  border-radius: 24px;
-  box-shadow: 
-    0 20px 60px rgba(0, 0, 0, 0.25),
-    0 8px 32px rgba(102, 126, 234, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  
-  /* Efeito de brilho sutil */
-  position: relative;
-  overflow: hidden;
-}
-
-#qrcode-container::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-  transform: rotate(45deg);
-  animation: shimmer 3s ease-in-out infinite;
-}
-
-@keyframes shimmer {
-  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-  50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-  100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  width: 180px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transition: opacity 0.5s ease-in-out; /* Base para mobile */
 }
 
 #qrcode-container.visible {
   opacity: 1;
-  right: 30px; /* Desliza para a posição final */
+  pointer-events: auto;
 }
 
 #qrcode-container img {
-  width: 200px; /* Aumentado de 150px para 200px */
-  height: 200px;
-  border-radius: 16px;
-  display: block;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  transition: transform 0.3s ease;
+  width: 100%;
+  height: auto;
+  max-width: 150px;
+  max-height: 150px;
+  border-radius: 8px;
+  object-fit: contain;
 }
 
-#qrcode-container:hover img {
-  transform: scale(1.05);
-}
-
-/* Pulso sutil para chamar atenção */
-#qrcode-container.visible {
-  animation: gentlePulse 4s ease-in-out infinite;
-}
-
-@keyframes gentlePulse {
-  0%, 100% { 
-    box-shadow: 
-      0 20px 60px rgba(0, 0, 0, 0.25),
-      0 8px 32px rgba(102, 126, 234, 0.15);
+/* Versão DESKTOP (maior e mais suave) */
+@media (min-width: 769px) {
+  #qrcode-container {
+    width: 460px;
+    height: 460px;
+    padding: 20px;
+    transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1); /* Animação premium */
   }
-  50% { 
-    box-shadow: 
-      0 25px 70px rgba(0, 0, 0, 0.3),
-      0 12px 40px rgba(102, 126, 234, 0.25);
+
+  #qrcode-container img {
+    max-width: 450px;
+    max-height: 450px;
   }
 }
+
+.fade-transition {
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* Restante do seu CSS original permanece igual abaixo */
+/* ... (inclua todo o resto do seu CSS existente aqui) ... */
 
 /* Intro permanente */
 #intro {
@@ -177,7 +155,7 @@ body {
   animation: fadeInStay 1s ease-in-out 4s forwards;
 }
 
-/* ✨ CONFIGURAÇÃO DE AVATAR COM ANIMAÇÃO SUAVE DA DIREITA */
+/* Configuração de Avatar */
 .avatar-setup {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
@@ -197,50 +175,6 @@ body {
 .current-avatar {
   display: inline-block;
   margin-bottom: 20px;
-  position: relative;
-}
-
-/* ✨ ANIMAÇÃO SUAVE DE FADE-IN DA DIREITA PARA O DRAGÃO */
-.current-avatar img {
-  width: 500px !important;
-  height: auto !important;
-  max-width: 90vw;
-  object-fit: contain; /* Mantém proporções sem esticar */
-  border-radius: 20px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-  
-  /* Estado inicial - invisível e deslocado para direita */
-  opacity: 0;
-  transform: translateX(80px) scale(0.9);
-  
-  /* Animação suave */
-  animation: dragonFadeInFromRight 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s forwards;
-}
-
-/* Keyframe para animação do dragão */
-@keyframes dragonFadeInFromRight {
-  0% {
-    opacity: 0;
-    transform: translateX(80px) scale(0.9);
-    filter: blur(3px);
-  }
-  60% {
-    opacity: 0.8;
-    transform: translateX(-10px) scale(1.02);
-    filter: blur(1px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-    filter: blur(0);
-  }
-}
-
-/* Efeito hover suave no dragão */
-.current-avatar img:hover {
-  transform: scale(1.05) translateY(-5px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .avatar-placeholder, .user-avatar, .bot-avatar {
@@ -257,21 +191,6 @@ body {
 .avatar-placeholder {
   background: rgba(102, 126, 234, 0.1);
   border: 2px dashed #667eea;
-  width: 500px !important;
-  height: 300px !important;
-  border-radius: 20px;
-  
-  /* Animação de placeholder também */
-  opacity: 0;
-  transform: translateX(60px);
-  animation: placeholderFadeIn 1.5s ease-out 0.3s forwards;
-}
-
-@keyframes placeholderFadeIn {
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
 }
 
 .user-avatar {
@@ -286,16 +205,6 @@ body {
   display: flex;
   gap: 12px;
   justify-content: center;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: buttonsSlideUp 1s ease-out 1.5s forwards;
-}
-
-@keyframes buttonsSlideUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .avatar-btn {
@@ -494,20 +403,9 @@ body {
     flex-direction: column;
   }
 
-  .user-avatar, .bot-avatar {
+  .user-avatar, .bot-avatar, .avatar-placeholder {
     width: 40px;
     height: 40px;
-  }
-
-  /* Dragão responsivo */
-  .current-avatar img {
-    width: 400px !important;
-    max-width: 85vw;
-  }
-
-  .avatar-placeholder {
-    width: 400px !important;
-    height: 250px !important;
   }
   
   /* QR Code responsivo melhorado */
@@ -526,16 +424,6 @@ body {
 }
 
 @media (max-width: 480px) {
-  .current-avatar img {
-    width: 350px !important;
-    max-width: 90vw;
-  }
-
-  .avatar-placeholder {
-    width: 350px !important;
-    height: 220px !important;
-  }
-
   #qrcode-container {
     right: -180px;
     padding: 15px;

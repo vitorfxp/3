@@ -3,9 +3,9 @@ setTimeout(() => {
   document.getElementById("chat-container").classList.remove("hidden");
 }, 4500);
 
-// Variáveis globais para avatares
+// Variáveis globais
 let userAvatarSrc = null;
-const botAvatarSrc = null; // Bot usa ícone SVG
+const botAvatarSrc = null;
 
 // Elementos DOM
 const form = document.getElementById("chat-form");
@@ -18,18 +18,14 @@ const uploadBtn = document.getElementById("upload-btn");
 const startChatBtn = document.getElementById("start-chat-btn");
 
 // Event listeners para avatar
-uploadBtn.addEventListener("click", () => {
-  avatarUpload.click();
-});
-
+uploadBtn.addEventListener("click", () => avatarUpload.click());
 avatarUpload.addEventListener("change", handleAvatarUpload);
-
 startChatBtn.addEventListener("click", () => {
   avatarSetup.style.display = "none";
   userInput.focus();
 });
 
-// Função para upload de avatar
+// Upload de avatar
 function handleAvatarUpload(event) {
   const file = event.target.files[0];
   if (file && file.type.startsWith('image/')) {
@@ -42,18 +38,17 @@ function handleAvatarUpload(event) {
   }
 }
 
-// Event listener para formulário
+// Envio de mensagem
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const userMessage = userInput.value.trim();
   if (!userMessage) return;
 
-  // ✅ VERIFICA SE É A PALAVRA-CHAVE ANTES DE ENVIAR
+  // Verifica palavra-chave
   if (userMessage.toLowerCase() === "computandose") {
-    // Mostra o QR code e limpa o input sem enviar pro backend
     verificarPalavraChave(userMessage);
     userInput.value = "";
-    return; // Para aqui, não envia pro backend
+    return;
   }
 
   addMessage(userMessage, "user");
@@ -65,21 +60,23 @@ form.addEventListener("submit", async (e) => {
     const botReply = await sendMessageToAPI(userMessage);
     chatBox.removeChild(typingIndicator);
     addMessage(botReply, "bot");
-    
   } catch (error) {
     chatBox.removeChild(typingIndicator);
     addMessage("Desculpe, ocorreu um erro. Tente novamente.", "bot");
   }
 });
 
-// ✅ FUNÇÃO PARA VERIFICAR PALAVRA-CHAVE E MOSTRAR QR CODE
 function verificarPalavraChave(texto) {
+  const qrContainer = document.getElementById("qrcode-container");
+  if (!qrContainer) return;
+
   if (texto.toLowerCase().includes("computandose")) {
-    const qrContainer = document.getElementById("qrcode-container");
-    if (qrContainer) {
+    // Delay de 100ms para sincronizar com a animação
+    setTimeout(() => {
       qrContainer.classList.remove("hidden");
       qrContainer.classList.add("visible");
-    }
+      addMessage("Aqui está o QR Code do Dragão! 🐉", "bot"); // Mensagem mais personalizada
+    }, 100);
   }
 }
 

@@ -12,11 +12,13 @@
   <header class="header">
     <h1 class="titulo">Chat Dragon</h1>
   </header>
-<div id="qrcode-container" class="hidden">
-  <img src="ChatGPT Image 2 de jun. de 2025, 00_12_47.png" alt="QR Code do Dragão" />
-</div>
 
-  <!-- Tela de introdução (permanece visível) -->
+  <!-- QR Code (fixo no lado direito) -->
+  <div id="qrcode-container" class="hidden fade-transition">
+    <img src="ChatGPT Image 2 de jun. de 2025, 00_12_47.png" alt="QR Code do Dragão" />
+  </div>
+
+  <!-- Tela de introdução -->
   <div id="intro">
     <h2 class="intro-text">Bem-vindo ao Chat Dragon</h2>
     <p class="intro-subtitle">Como posso te ajudar hoje?</p>
@@ -24,7 +26,7 @@
 
   <!-- Área principal do chat -->
   <div id="chat-container" class="hidden">
-    <!-- Seção de configuração do avatar -->
+    <!-- Configuração do avatar -->
     <div class="avatar-setup" id="avatar-setup">
       <div class="avatar-config">
         <h3>Escolha seu avatar</h3>
