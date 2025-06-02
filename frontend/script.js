@@ -90,7 +90,7 @@ function addMessage(text, sender) {
   // Criar mensagem
   const message = document.createElement("div");
   message.classList.add("message");
-  message.textContent = text;
+  message.innerHTML = sender === "bot" ? formatBotResponse(text) : text;
 
   // Montar container
   messageContainer.appendChild(avatar);
@@ -154,3 +154,18 @@ userInput.addEventListener("keydown", (e) => {
     form.dispatchEvent(new Event("submit"));
   }
 });
+
+// 💡 NOVA FUNÇÃO PARA FORMATAR RESPOSTA DO BOT
+function formatBotResponse(text) {
+  // Substitui **negrito**
+  text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+  // Divide por linhas e cria lista com bolinhas
+  const lines = text.split(/\n+/);
+  const formatted = lines
+    .filter(line => line.trim() !== "")
+    .map(line => `<li>${line.trim()}</li>`)
+    .join('');
+
+  return `<ul style="padding-left: 1.5em; list-style-type: disc;">${formatted}</ul>`;
+}
