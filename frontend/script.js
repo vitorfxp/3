@@ -57,11 +57,24 @@ form.addEventListener("submit", async (e) => {
     const botReply = await sendMessageToAPI(userMessage);
     chatBox.removeChild(typingIndicator);
     addMessage(botReply, "bot");
+    
+    // ✅ NOVA FUNCIONALIDADE: Verifica se a resposta do bot contém a palavra-chave
+    verificarPalavraChave(botReply);
+    
   } catch (error) {
     chatBox.removeChild(typingIndicator);
     addMessage("Desculpe, ocorreu um erro. Tente novamente.", "bot");
   }
 });
+
+// ✅ FUNÇÃO PARA VERIFICAR PALAVRA-CHAVE E MOSTRAR QR CODE
+function verificarPalavraChave(texto) {
+  if (texto.toLowerCase().includes("computandose")) {
+    const qrContainer = document.getElementById("qrcode-container");
+    qrContainer.classList.remove("hidden");
+    qrContainer.classList.add("visible");
+  }
+}
 
 // ✅ Função atualizada com suporte a Markdown
 function addMessage(text, sender) {
@@ -153,41 +166,3 @@ userInput.addEventListener("keydown", (e) => {
     form.dispatchEvent(new Event("submit"));
   }
 });
-function verificarPalavraChave(texto) {
-  if (texto.toLowerCase().includes("computandose")) {
-    const qrContainer = document.getElementById("qrcode-container");
-    qrContainer.classList.add("visible");
-    qrContainer.classList.remove("hidden");
-  }
-}
-
-// Supondo que você já tem um listener como esse:
-sendButton.addEventListener("click", () => {
-  const userInput = inputField.value.trim();
-  if (userInput !== "") {
-    // já deve haver código aqui para enviar a mensagem...
-    verificarPalavraChave(userInput); // <- chama aqui!
-  }
-});
-const showDragonAlert = () => {
-  const alertBox = document.getElementById("dragon-alert");
-  alertBox.classList.remove("hidden");
-};
-
-const observeInput = () => {
-  const observer = new MutationObserver(() => {
-    const chatTexts = document.querySelectorAll(".message");
-    chatTexts.forEach((msg) => {
-      if (msg.textContent.toLowerCase().includes("computandose")) {
-        showDragonAlert();
-      }
-    });
-  });
-
-  const chatContainer = document.querySelector("#chat-container"); // use o ID correto do seu chat
-  if (chatContainer) {
-    observer.observe(chatContainer, { childList: true, subtree: true });
-  }
-};
-
-observeInput();

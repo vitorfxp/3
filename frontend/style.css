@@ -13,6 +13,7 @@ body {
   align-items: center;
   height: 100vh;
   overflow: hidden;
+  position: relative; /* ✅ Para posicionamento do QR code */
 }
 
 /* Cabeçalho fixo */
@@ -36,6 +37,34 @@ body {
   background-clip: text;
   font-weight: 700;
   letter-spacing: -0.5px;
+}
+
+/* ✅ ESTILO DO QR CODE - LADO DIREITO COM FADE-IN */
+#qrcode-container {
+  position: fixed;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#qrcode-container.visible {
+  opacity: 1;
+}
+
+#qrcode-container img {
+  width: 150px;
+  height: 150px;
+  border-radius: 12px;
+  display: block;
 }
 
 /* Intro permanente */
@@ -346,57 +375,15 @@ body {
     width: 40px;
     height: 40px;
   }
-}
-#qrcode-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
-  opacity: 0;
-  transition: opacity 1s ease-in-out;
-}
-
-#qrcode-container img {
-  width: 180px;
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
-}
-
-#qrcode-container.visible {
-  opacity: 1;
-}
-#dragon-alert {
-  position: absolute;
-  bottom: 120px;
-  left: 20px;
-  background-color: rgba(255, 255, 255, 0.05);
-  padding: 15px;
-  border-radius: 15px;
-  backdrop-filter: blur(5px);
-  animation: fadeIn 1s ease forwards;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-#dragon-alert img {
-  width: 100px;
-  height: auto;
-  border-radius: 10px;
-}
-
-.hidden {
-  display: none;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
+  
+  /* ✅ QR Code responsivo */
+  #qrcode-container {
+    right: 10px;
+    padding: 15px;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  
+  #qrcode-container img {
+    width: 120px;
+    height: 120px;
   }
 }
