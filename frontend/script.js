@@ -79,7 +79,6 @@ function verificarPalavraChave(texto) {
     if (qrContainer) {
       qrContainer.classList.remove("hidden");
       qrContainer.classList.add("visible");
-      console.log("QR Code mostrado!"); // Para debug
     }
   }
 }
