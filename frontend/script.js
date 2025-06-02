@@ -155,17 +155,24 @@ userInput.addEventListener("keydown", (e) => {
   }
 });
 
-// 💡 NOVA FUNÇÃO PARA FORMATAR RESPOSTA DO BOT
 function formatBotResponse(text) {
-  // Substitui **negrito**
+  // Aplica negrito: transforma **texto** em <strong>
   text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
-  // Divide por linhas e cria lista com bolinhas
+  // Converte listas marcadas com "* " ou "- " no início da linha em <li>
   const lines = text.split(/\n+/);
   const formatted = lines
     .filter(line => line.trim() !== "")
-    .map(line => `<li>${line.trim()}</li>`)
+    .map(line => {
+      const trimmed = line.trim();
+      // Se começa com * ou - seguido de espaço, vira item de lista
+      if (/^[-*]\s/.test(trimmed)) {
+        return `<li>${trimmed.replace(/^[-*]\s/, '')}</li>`;
+      }
+      return `<li>${trimmed}</li>`;
+    })
     .join('');
 
   return `<ul style="padding-left: 1.5em; list-style-type: disc;">${formatted}</ul>`;
 }
+
