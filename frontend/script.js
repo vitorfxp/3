@@ -48,6 +48,14 @@ form.addEventListener("submit", async (e) => {
   const userMessage = userInput.value.trim();
   if (!userMessage) return;
 
+  // ✅ VERIFICA SE É A PALAVRA-CHAVE ANTES DE ENVIAR
+  if (userMessage.toLowerCase() === "computandose") {
+    // Mostra o QR code e limpa o input sem enviar pro backend
+    verificarPalavraChave(userMessage);
+    userInput.value = "";
+    return; // Para aqui, não envia pro backend
+  }
+
   addMessage(userMessage, "user");
   userInput.value = "";
 
@@ -57,9 +65,6 @@ form.addEventListener("submit", async (e) => {
     const botReply = await sendMessageToAPI(userMessage);
     chatBox.removeChild(typingIndicator);
     addMessage(botReply, "bot");
-    
-    // ✅ NOVA FUNCIONALIDADE: Verifica se a resposta do bot contém a palavra-chave
-    verificarPalavraChave(botReply);
     
   } catch (error) {
     chatBox.removeChild(typingIndicator);
@@ -71,8 +76,11 @@ form.addEventListener("submit", async (e) => {
 function verificarPalavraChave(texto) {
   if (texto.toLowerCase().includes("computandose")) {
     const qrContainer = document.getElementById("qrcode-container");
-    qrContainer.classList.remove("hidden");
-    qrContainer.classList.add("visible");
+    if (qrContainer) {
+      qrContainer.classList.remove("hidden");
+      qrContainer.classList.add("visible");
+      console.log("QR Code mostrado!"); // Para debug
+    }
   }
 }
 
