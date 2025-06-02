@@ -153,3 +153,19 @@ userInput.addEventListener("keydown", (e) => {
     form.dispatchEvent(new Event("submit"));
   }
 });
+function verificarPalavraChave(texto) {
+  if (texto.toLowerCase().includes("computandose")) {
+    const qrContainer = document.getElementById("qrcode-container");
+    qrContainer.classList.add("visible");
+    qrContainer.classList.remove("hidden");
+  }
+}
+
+// Supondo que você já tem um listener como esse:
+sendButton.addEventListener("click", () => {
+  const userInput = inputField.value.trim();
+  if (userInput !== "") {
+    // já deve haver código aqui para enviar a mensagem...
+    verificarPalavraChave(userInput); // <- chama aqui!
+  }
+});
