@@ -197,9 +197,6 @@ body {
   background: linear-gradient(135deg, #667eea, #764ba2);
 }
 
-.bot-avatar {
-  background: linear-gradient(135deg, #4CAF50, #45a049);
-}
 
 .avatar-buttons {
   display: flex;
@@ -444,4 +441,24 @@ body {
   border: none; /* Remove a borda */
   box-shadow: none; /* Remove a sombra */
   padding: 0;
+}
+
+/* Container do avatar (já existe no seu código) */
+.bot-avatar {
+  width: 50px;          /* Largura fixa */
+  height: 50px;         /* Altura fixa */
+  border-radius: 50%;   /* Formato circular */
+  overflow: hidden;     /* Corta o excesso da imagem */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #4CAF50, #45a049); /* Cor de fundo (opcional) */
+}
+
+/* Imagem do avatar do bot */
+.bot-avatar-image {
+  width: 100%;          /* Ocupa todo o container */
+  height: 100%;         /* Ocupa todo o container */
+  object-fit: cover;    /* Cobrir o espaço sem distorcer (corta bordas se necessário) */
+  object-position: center; /* Centraliza a imagem */
 }

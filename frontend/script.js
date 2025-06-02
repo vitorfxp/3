@@ -88,17 +88,16 @@ function addMessage(text, sender) {
   const avatar = document.createElement("div");
   avatar.classList.add(sender === "user" ? "user-avatar" : "bot-avatar");
 
-  if (sender === "user" && userAvatarSrc) {
-    avatar.innerHTML = `<img src="${userAvatarSrc}" class="avatar-image" alt="Você">`;
-  } else if (sender === "user") {
-    avatar.innerHTML = `<svg width="30" height="30" viewBox="0 0 24 24" fill="white">
-      <path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
-    </svg>`;
-  } else {
-    avatar.innerHTML = `<svg width="30" height="30" viewBox="0 0 24 24" fill="white">
-      <path d="M12,2C13.1,2 14,2.9 14,4C14,5.1 13.1,6 12,6C10.9,6 10,5.1 10,4C10,2.9 10.9,2 12,2M21,9V7L15,1L13.5,2.5L16.17,5.17L10.5,10.84L4.83,5.17L7.5,2.5L6,1L0,7V9L3,6L9,12L3,18V20L6,17L9.41,20.41L12,17.82L14.59,20.41L18,17L21,20V18L15,12L21,9Z"/>
-    </svg>`;
-  }
+if (sender === "user" && userAvatarSrc) {
+  avatar.innerHTML = `<img src="${userAvatarSrc}" class="avatar-image" alt="Você">`;
+} else if (sender === "user") {
+  avatar.innerHTML = `<svg width="30" height="30" viewBox="0 0 24 24" fill="white">
+    <path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
+  </svg>`;
+} else {
+  avatar.innerHTML = `<img src="avatar-bot.png" class="bot-avatar-image" alt="Bot">`;
+}
+
 
   const message = document.createElement("div");
   message.classList.add("message");
@@ -170,3 +169,4 @@ userInput.addEventListener("keydown", (e) => {
     form.dispatchEvent(new Event("submit"));
   }
 });
+
